@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import actionGuess from '../actions/guess'
-import actionGame from '../actions/newGame'
 import { connect } from 'react-redux'
 
 function showGuess(word, guesses) {
@@ -37,11 +36,6 @@ export class Game extends PureComponent {
     document.getElementById("guessForm").reset()
   }
 
-  newGame(event) {
-    event.preventDefault()
-    this.props.actionGame()
-  }
-
   render () {
     const currentGuesses = this.props.guesses
     const thisWord = this.props.word
@@ -52,22 +46,18 @@ export class Game extends PureComponent {
     if (thisRoundCount <= 6 && thisRoundWinner === true)
       return (
         <div className="Game">
-        <h1>Winner!</h1>
-          <hr />
-          <div className="newGame">
-            <button className="primary" onClick={this.newGame.bind(this)}>New Game</button>
-          </div>
+          <h1>Winner!</h1>
         </div>
       )
     else if (thisRoundCount > 6)
       return (
         <div className="Game">
-        <h1>You lost</h1>
-          <hr />
-          <div className="newGame">
-            <button className="primary" onClick={this.newGame.bind(this)}>New Game</button>
-          </div>
+          <h1>You lost</h1>
         </div>
+      )
+    else if (thisWord === "start")
+      return (
+        <h2>Welcome to hangman</h2>
       )
     else
       return(
@@ -83,16 +73,12 @@ export class Game extends PureComponent {
               <input type="submit" value="Guess!" />
             </form>
           </div>
-          <hr />
-          <div className="newGame">
-            <button className="primary" onClick={this.newGame.bind(this)}>New Game</button>
-          </div>
         </div>
       )
   }
 }
 
 const mapStateToProps = ({ word, guesses }) => ({ word, guesses })
-const mapDispatchToProps = { actionGuess, actionGame }
+const mapDispatchToProps = { actionGuess }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game)
