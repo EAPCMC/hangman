@@ -2,6 +2,14 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import actionGuess from '../actions/guess'
 import { connect } from 'react-redux'
+import Winner from '../images/hangmanWinner.png'
+import Dead from '../images/hangmanLost.png'
+import HM1 from '../images/hangman1.png'
+import HM2 from '../images/hangman2.png'
+import HM3 from '../images/hangman3.png'
+import HM4 from '../images/hangman4.png'
+import HM5 from '../images/hangman5.png'
+import HM6 from '../images/hangman6.png'
 
 function showGuess(word, guesses) {
   var wordArray = word.split("")
@@ -36,6 +44,19 @@ export class Game extends PureComponent {
     document.getElementById("guessForm").reset()
   }
 
+  chooseHM() {
+    const currentGuesses = this.props.guesses
+    const thisWord = this.props.word
+    const thisRoundCount = wrongGuessCount(thisWord, currentGuesses)
+    if (thisRoundCount === 0) return <img src={ HM1 } alt="hangman"/>
+    if (thisRoundCount === 1) return <img src={ HM1 } alt="hangman"/>
+    if (thisRoundCount === 2) return <img src={ HM2 } alt="hangman"/>
+    if (thisRoundCount === 3) return <img src={ HM3 } alt="hangman"/>
+    if (thisRoundCount === 4) return <img src={ HM4 } alt="hangman"/>
+    if (thisRoundCount === 5) return <img src={ HM5 } alt="hangman"/>
+    if (thisRoundCount === 6) return <img src={ HM6 } alt="hangman"/>
+  }
+
   render () {
     const currentGuesses = this.props.guesses
     const thisWord = this.props.word
@@ -46,22 +67,28 @@ export class Game extends PureComponent {
     if (thisRoundCount <= 6 && thisRoundWinner === true)
       return (
         <div className="Game">
+          <img src={ Winner } alt="hangmanWinner"/>
           <h1>Winner!</h1>
         </div>
       )
     else if (thisRoundCount > 6)
       return (
         <div className="Game">
+          <img src={ Dead } alt="hangmanDead"/>
           <h1>You lost</h1>
         </div>
       )
     else if (thisWord === "start")
       return (
-        <h2>Welcome to hangman</h2>
+        <div className="welcome">
+          <img src={ Dead } alt="hangmanDead"/>
+          <h2>Welcome to hangman</h2>
+        </div>
       )
     else
       return(
         <div className="Game">
+          <p>{ this.chooseHM() }</p>
           <h2>{ thisRoundWord }</h2>
           <p>Your guesses: { currentGuesses.join(" ") }</p>
           <p>Wrong guesses: { thisRoundCount }/6</p>
