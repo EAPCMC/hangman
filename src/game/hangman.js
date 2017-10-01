@@ -74,7 +74,7 @@ export class Game extends PureComponent {
         <div className="Game">
           <h2>{ thisRoundWord }</h2>
           <p>Your guesses: { currentGuesses.join(" ") }</p>
-          <p>Wrong guesses: {thisRoundCount }/6</p>
+          <p>Wrong guesses: { thisRoundCount }/6</p>
           <div className="guess">
             <form id="guessForm" onSubmit={this.addGuess.bind(this)}>
               <div className="input">
