@@ -27,14 +27,17 @@ function wrongGuessCount(word, guesses) {
   }, 0);
 }
 
-function isWinner(word, guesses) {
-    if ((wrongGuessCount(word, guesses) <= 6) && (showGuess(word, guesses)  === word.split("").join(" "))) return true
-}
-
 export class Game extends PureComponent {
   static propTypes = {
     word: PropTypes.string.isRequired,
     guesses: PropTypes.array,
+  }
+
+  isWinner(word, guesses) {
+    const guess = this.props.guesses[guesses.length - 1]
+    const thisWord = this.props.word
+    if ((wrongGuessCount(word, guesses) <= 6) && (showGuess(word, guesses)  === word.split("").join(" "))) return true
+    else if (guess === thisWord) return true
   }
 
   addGuess(event) {
@@ -62,7 +65,7 @@ export class Game extends PureComponent {
     const thisWord = this.props.word
     const thisRoundWord = showGuess(thisWord, currentGuesses)
     const thisRoundCount = wrongGuessCount(thisWord, currentGuesses)
-    const thisRoundWinner = isWinner(thisWord, currentGuesses)
+    const thisRoundWinner = this.isWinner(thisWord, currentGuesses)
 
     if (thisRoundCount <= 6 && thisRoundWinner === true)
       return (
@@ -76,6 +79,7 @@ export class Game extends PureComponent {
         <div className="Game">
           <img src={ Dead } alt="hangmanDead"/>
           <h1>You lost</h1>
+          <h3>the word was { thisWord }</h3>
         </div>
       )
     else if (thisWord === "start")
