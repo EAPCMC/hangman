@@ -43,7 +43,13 @@ export class Game extends PureComponent {
   addGuess(event) {
     event.preventDefault()
     const guess = this.refs.guess.value
-    this.props.actionGuess(guess)
+    const thisWord = this.props.word
+    if ((guess.length === 1) || (guess === thisWord))
+      this.props.actionGuess(guess)
+    else // add feedback
+      return(
+          <alert>Invalid guess</alert>
+      )
     document.getElementById("guessForm").reset()
   }
 
@@ -94,8 +100,8 @@ export class Game extends PureComponent {
         <div className="Game">
           <p>{ this.chooseHM() }</p>
           <h2>{ thisRoundWord }</h2>
-          <p>Your guesses: { currentGuesses.join(" ") }</p>
-          <p>Wrong guesses: { thisRoundCount }/6</p>
+          <p>Your guesses: { currentGuesses.join(", ") }</p>
+          <p>Wrong guesses: { thisRoundCount }/7</p>
           <div className="guess">
             <form id="guessForm" onSubmit={this.addGuess.bind(this)}>
               <div className="input">
